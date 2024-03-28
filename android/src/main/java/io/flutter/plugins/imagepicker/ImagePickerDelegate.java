@@ -683,6 +683,11 @@ public class ImagePickerDelegate
       ArrayList<MediaPath> paths = new ArrayList<>();
       if (intent.getClipData() != null) {
         for (int i = 0; i < intent.getClipData().getItemCount(); i++) {
+          // If there's no valid path, return an error
+          if(fileUtils.getPathFromUri(activity, intent.getClipData().getItemAt(i).getUri()) == null) {
+            finishWithError("no_valid_image_uri", "Cannot find the selected image.");
+            continue;
+          }
 
           paths.add(
               new MediaPath(
